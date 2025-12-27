@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hadrider <hadrider@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/17 11:55:11 by hadrider          #+#    #+#             */
-/*   Updated: 2025/12/25 16:00:49 by hadrider         ###   ########.fr       */
+/*   Created: 2025/12/25 15:48:39 by hadrider          #+#    #+#             */
+/*   Updated: 2025/12/26 15:13:54 by hadrider         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*read_and_save(int fd, char *text)
 {
@@ -94,17 +94,26 @@ static char	*clean_save(char *text)
 
 char	*get_next_line(int fd)
 {
-	static char	*text;
+	static char	*text[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
-		return (free(text), text = NULL, NULL);
-	text = read_and_save(fd, text);
-	if (!text)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX
+		|| BUFFER_SIZE >= 2147483647)
+	{
+		free(text[fd]);
+		text[fd] = NULL;
 		return (NULL);
-	line = extract_line(text);
-	if (line == NULL)
-		return (free(text), text = NULL, NULL);
-	text = clean_save(text);
+	}
+	text[fd] = read_and_save(fd, text[fd]);
+	if (!text[fd])
+		return (NULL);
+	line = extract_line(text[fd]);
+	if (!line)
+	{
+		free(text[fd]);
+		text[fd] = NULL;
+		return (NULL);
+	}
+	text[fd] = clean_save(text[fd]);
 	return (line);
 }

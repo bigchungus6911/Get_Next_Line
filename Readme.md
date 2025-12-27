@@ -1,40 +1,58 @@
-*This project has been created as part of the 42 curriculum by hatimdride.*
+get_next_line
 
-# get_next_line
+This project was created as part of the 42 / 1337 curriculum  
+Author: hatimdride
 
-## Description
+--------------------------------------------------
 
-**get_next_line** is a project from the 42 / 1337 curriculum whose goal is to implement a function capable of reading a file descriptor **line by line**.
+OVERVIEW
 
-Each call to `get_next_line()` returns the next line from the given file descriptor, including the terminating newline character (`\n`) if it exists. The function must correctly handle buffering, partial reads, end-of-file cases, and memory management, while respecting strict constraints on allowed functions.
+get_next_line is a project from the 42 curriculum.
+Its goal is to implement a function that reads from a file descriptor
+one line at a time.
 
-This project is designed to strengthen understanding of:
+Each call to get_next_line returns the next line from the file descriptor,
+including the newline character if it exists.
 
-* Static variables
-* File descriptors and the `read()` system call
-* Memory allocation and freeing
-* String manipulation without standard library helpers
+--------------------------------------------------
 
----
+WHAT YOU LEARN
 
-## Instructions
+- How static variables work
+- How file descriptors behave
+- Using the read() system call
+- Memory allocation and freeing
+- Handling edge cases such as EOF and small buffers
 
-### Compilation
+--------------------------------------------------
 
-Compile the project with a chosen buffer size:
+FUNCTION PROTOTYPE
+```c
+char *get_next_line(int fd);
+```
+Behavior:
+- Returns the next line read from fd
+- Includes the newline character if present
+- Returns NULL on end of file or error
+- The returned line must be freed by the caller
 
+--------------------------------------------------
+
+COMPILATION
+
+Mandatory part:
 ```bash
 gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
 ```
+Bonus part:
+```bash
+gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_utils_bonus.c
+```
+BUFFER_SIZE can be set to any positive value.
 
-You can change `BUFFER_SIZE` to any positive value at compile time.
+--------------------------------------------------
 
----
-
-### Usage
-
-Example of usage in a program:
-
+USAGE EXAMPLE
 ```c
 int fd = open("file.txt", O_RDONLY);
 char *line;
@@ -46,59 +64,44 @@ while ((line = get_next_line(fd)))
 }
 close(fd);
 ```
-
 The caller is responsible for freeing the returned line.
 
----
+--------------------------------------------------
 
-## Algorithm Explanation
+HOW IT WORKS
 
-The algorithm is based on **incremental reading and buffering**:
+- A static buffer keeps unread data between function calls
+- Data is read using read() into a temporary buffer
+- The temporary buffer is appended to the static buffer
+- Reading continues until a newline or EOF is found
+- When a newline is found, the line is returned
+- Remaining data is saved for the next call
+- When EOF is reached and no data remains, NULL is returned
 
-1. A **static buffer (`text`)** is used to store leftover data between function calls.
-2. The function reads from the file descriptor into a temporary buffer of size `BUFFER_SIZE`.
-3. Read data is appended to the static buffer until a newline character is found or EOF is reached.
-4. Once a newline is detected:
+This works even with:
+- BUFFER_SIZE = 1
+- Lines longer than BUFFER_SIZE
+- Multiple reads per line
 
-   * A line is extracted from the buffer and returned.
-   * The remaining data after the newline is saved for the next call.
-5. If EOF is reached without remaining data, the function returns `NULL`.
+--------------------------------------------------
 
-This approach ensures:
-
-* No data loss between calls
-* Minimal reads
-* Correct handling of lines longer than `BUFFER_SIZE`
-
-Memory is carefully managed by freeing unused buffers and reallocating only what is necessary.
-
----
-
-## Files
-
-```
-get_next_line.c        # Core logic
-get_next_line_utils.c  # Utility functions
-get_next_line.h        # Prototypes and macros
+FILES
+```c
+get_next_line.c
+get_next_line_utils.c
+get_next_line_bonus.c
+get_next_line_utils_bonus.c
+get_next_line.h
 README.md
 ```
+--------------------------------------------------
 
----
+RESOURCES
 
-## Resources
+- 42 get_next_line subject PDF
+- man 2 read
+- man 3 malloc
+- man 3 free
 
-* 42 Subject PDF: *get_next_line*
-* `man 2 read`
-* `man 3 malloc`
-* `man 3 free`
-* GNU C Library Documentation
-
----
-
-## Author
-
-Hatim Dride
-
-## School
-
-42 / 1337
+AI tools were used only for understanding concepts.
+Code was written manually.

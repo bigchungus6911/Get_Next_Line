@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hadrider <hadrider@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/10 11:31:20 by hadrider          #+#    #+#             */
-/*   Updated: 2025/12/27 12:27:27 by hadrider         ###   ########.fr       */
+/*   Created: 2025/12/25 15:49:59 by hadrider          #+#    #+#             */
+/*   Updated: 2025/12/26 15:13:40 by hadrider         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 67
 # endif
