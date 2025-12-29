@@ -1,58 +1,40 @@
-get_next_line
+*This project has been created as part of the 42 curriculum by hadrider.*
 
-This project was created as part of the 42 / 1337 curriculum  
-Author: hatimdride
+# get_next_line
 
---------------------------------------------------
+## Description
 
-OVERVIEW
+get_next_line is a 42 / 1337 project that consists of implementing a function
+that reads and returns one line at a time from a file descriptor.
+Each call returns the next line, including the newline character (`\n`) if it exists,
+until end of file.
 
-get_next_line is a project from the 42 curriculum.
-Its goal is to implement a function that reads from a file descriptor
-one line at a time.
-
-Each call to get_next_line returns the next line from the file descriptor,
-including the newline character if it exists.
-
---------------------------------------------------
-
-WHAT YOU LEARN
-
-- How static variables work
-- How file descriptors behave
-- Using the read() system call
-- Memory allocation and freeing
-- Handling edge cases such as EOF and small buffers
-
---------------------------------------------------
-
-FUNCTION PROTOTYPE
+## Function Prototype
 ```c
 char *get_next_line(int fd);
 ```
-Behavior:
-- Returns the next line read from fd
-- Includes the newline character if present
-- Returns NULL on end of file or error
-- The returned line must be freed by the caller
 
---------------------------------------------------
+    Returns the next line from fd
 
-COMPILATION
+    Includes \n if present
 
-Mandatory part:
+    Returns NULL on EOF or error
+
+    The returned string must be freed by the caller
+
+## Instructions
+
+### Compilation
+
+#### Mandatory:
 ```bash
 gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
 ```
-Bonus part:
+#### Bonus:
 ```bash
 gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_utils_bonus.c
 ```
-BUFFER_SIZE can be set to any positive value.
-
---------------------------------------------------
-
-USAGE EXAMPLE
+#### Usage
 ```c
 int fd = open("file.txt", O_RDONLY);
 char *line;
@@ -64,44 +46,32 @@ while ((line = get_next_line(fd)))
 }
 close(fd);
 ```
-The caller is responsible for freeing the returned line.
+## Algorithm
 
---------------------------------------------------
+A static buffer stores unread data between calls.
+Data is read using read() and appended until a newline or EOF is found.
+When a newline exists, the line is returned and the remaining data is kept
+for the next call.
+At EOF, remaining data is returned once, then NULL.
 
-HOW IT WORKS
+This works with any BUFFER_SIZE, including 1, and with lines longer than
+the buffer size.
 
-- A static buffer keeps unread data between function calls
-- Data is read using read() into a temporary buffer
-- The temporary buffer is appended to the static buffer
-- Reading continues until a newline or EOF is found
-- When a newline is found, the line is returned
-- Remaining data is saved for the next call
-- When EOF is reached and no data remains, NULL is returned
+## Resources
 
-This works even with:
-- BUFFER_SIZE = 1
-- Lines longer than BUFFER_SIZE
-- Multiple reads per line
+    42 get_next_line subject PDF
 
---------------------------------------------------
+    man 2 read
 
-FILES
-```c
-get_next_line.c
-get_next_line_utils.c
-get_next_line_bonus.c
-get_next_line_utils_bonus.c
-get_next_line.h
-README.md
-```
---------------------------------------------------
+    man 3 malloc
 
-RESOURCES
+    man 3 free
 
-- 42 get_next_line subject PDF
-- man 2 read
-- man 3 malloc
-- man 3 free
+## AI Usage
 
-AI tools were used only for understanding concepts.
-Code was written manually.
+AI tools were used only to understand general concepts.
+All code was written manually.
+
+## Author
+
+hadrider
