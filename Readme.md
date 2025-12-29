@@ -46,6 +46,25 @@ while ((line = get_next_line(fd)))
 }
 close(fd);
 ```
+### example file 
+
+#### file.txt
+```
+hello world\n
+hello test\n
+test\n
+```
+### expected output
+
+#### first call
+```
+hello world\n
+```
+#### second call
+```
+hello test\n
+```
+
 ## Algorithm
 
 A static buffer stores unread data between calls.
