@@ -10,17 +10,17 @@ Each call returns the next line, including the newline character (`\n`) if it ex
 until end of file.
 
 ## Function Prototype
+
 ```c
 char *get_next_line(int fd);
 ```
+   Returns the next line from fd
 
-    Returns the next line from fd
+   Includes \n if present
 
-    Includes \n if present
+   Returns NULL on EOF or error
 
-    Returns NULL on EOF or error
-
-    The returned string must be freed by the caller
+   The returned string must be freed by the caller
 
 ## Instructions
 
@@ -59,13 +59,13 @@ the buffer size.
 
 ## Resources
 
-    42 get_next_line subject PDF
+   42 get_next_line subject PDF
 
-    man 2 read
+   man 2 read
 
-    man 3 malloc
+   man 3 malloc
 
-    man 3 free
+   man 3 free
 
 ## AI Usage
 
