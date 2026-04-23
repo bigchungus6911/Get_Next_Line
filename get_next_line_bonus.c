@@ -17,18 +17,11 @@ static char	*read_and_save(int fd, char *text)
 	char	*buf;
 	int		bytes;
 
-	if (!text)
-	{
-		text = malloc(1);
-		if (!text)
-			return (NULL);
-		text[0] = '\0';
-	}
 	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (free(text), NULL);
-	bytes = 0;
-	while (!ft_strchr(text, '\n'))
+	bytes = 1;
+	while (bytes > 0 && !ft_strchr(text, '\n'))
 	{
 		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes == 0)
@@ -37,8 +30,11 @@ static char	*read_and_save(int fd, char *text)
 			return (free(buf), free(text), NULL);
 		buf[bytes] = '\0';
 		text = ft_strjoin(text, buf);
+		if (!text)
+			return (free(buf), NULL);
 	}
-	return (free(buf), text);
+	free(buf);
+	return (text);
 }
 
 static char	*extract_line(char *text)
@@ -97,11 +93,13 @@ char	*get_next_line(int fd)
 	static char	*text[OPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX
-		|| BUFFER_SIZE >= 2147483647)
+	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0 || BUFFER_SIZE >= 2147483647)
 	{
-		free(text[fd]);
-		text[fd] = NULL;
+		if (fd >= 0 && fd < OPEN_MAX)
+		{
+			free(text[fd]);
+			text[fd] = NULL;
+		}
 		return (NULL);
 	}
 	text[fd] = read_and_save(fd, text[fd]);
